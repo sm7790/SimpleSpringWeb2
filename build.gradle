@@ -1,0 +1,94 @@
+apply plugin: "war"
+apply plugin: "eclipse-wtp"
+apply plugin: "java"
+apply plugin: 'org.akhikhl.gretty'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+ 
+    dependencies {
+    classpath 'org.akhikhl.gretty:gretty:+'
+  }
+ 
+}
+
+gretty {
+  port = 9050
+  contextPath = 'restWebWithConfig'
+  servletContainer = 'tomcat8'
+  contextConfigFile = 'context.xml'
+  debugPort = 5005      // default
+  debugSuspend = true
+}
+
+
+sourceSets {
+	
+	main {
+		java {
+			output.classesDir="src/main/webapp/WEB-INF/classes"
+		}
+	}
+}
+
+repositories{
+ mavenCentral()
+}
+
+dependencies{
+  
+  //spring core
+  compile "org.springframework:spring-context:4.2.1.RELEASE"
+  compile "org.springframework:spring-context-support:4.2.1.RELEASE"
+  
+  compile "org.springframework:spring-orm:4.2.1.RELEASE"
+  //spring MVC
+  compile "org.springframework:spring-webmvc:4.2.1.RELEASE"
+  
+  //For JPA 
+  compile("org.hibernate:hibernate-entitymanager:4.3.8.Final") {
+		exclude group: "org.jboss.spec.javax.transaction"
+	}
+  compile "org.apache.commons:commons-lang3:3.1"
+  
+  
+  //for jstl 
+  compile "javax.servlet:jstl:1.2"
+  compile "org.hibernate:hibernate-validator:5.1.3.Final"
+  
+   providedCompile "javax.servlet:javax.servlet-api:3.1.0"
+ 
+  
+  compile "com.fasterxml.jackson.core:jackson-databind:2.5.2"
+  compile "com.fasterxml.jackson.datatype:jackson-datatype-hibernate4:2.5.2"
+  compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.5.2"
+  compile "com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.5.2"
+  }
+
+
+eclipse{
+ project{
+     name='restWebWithConfig'
+     
+    /* natures.add "org.springframework.ide.eclipse.core.springnature"
+     natures.add "org.springsource.ide.eclipse.gradle.core.nature"
+     natures.add "org.eclipse.jdt.core.javanature"
+     buildCommand "org.eclipse.jdt.core.javabuilder"
+		buildCommand "org.eclipse.wst.common.project.facet.core.builder"
+		buildCommand "org.eclipse.wst.validation.validationbuilder"
+		buildCommand "org.springframework.ide.eclipse.core.springbuilder"
+		*/
+		
+   }
+   
+   wtp {
+    component {
+      
+      //define context path, default to project folder name
+      contextPath = 'restWebWithConfig'
+      
+    }
+   } 
+}
